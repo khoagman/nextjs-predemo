@@ -1,33 +1,36 @@
 import os
+
 import tensorflow as tf
 from tensorflow.keras.models import load_model
 import joblib
 import numpy as np
-from sklearn.preprocessing import MinMaxScaler
+#from preprocessing import scaled_feature
+
+def SVMprediction(feature):
+    print('SVM')
+    length = len(feature)
+    x = feature.reshape((1,length))
+    #x = scaled_feature(x)
+    pred = svm_model.predict(x)
+    return pred[0].capitalize()
 
 def LSTMprediction(feature):
     length = len(feature)
     x = feature.reshape((1,length,1))
     pred = lstm_model.predict(x)
     y_num = np.argmax(pred[0])
+    print('RUN LSTM')
     return trans(y_num)
 
-def SVMprediction(feature):
-    length = len(feature)
-    x = feature.reshape((1,length))
-    x = scaler.fit_transform(x)
-    pred = svm_model.predict(x)
-    return pred[0].capitalize()
-
 def RFprediction(feature):
+    print('RF')
     length = len(feature)
     x = feature.reshape((1,length))
-    x = scaler.fit_transform(x)
+    #x = scaled_feature(x)
     pred = rf_model.predict(x)
     return pred[0].capitalize()
 
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
-scaler = MinMaxScaler(feature_range=(0,1))
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
