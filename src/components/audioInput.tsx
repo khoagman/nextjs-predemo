@@ -4,6 +4,7 @@ import { useState } from "react"
 import AudioUploader from "./audioExtraction";
 import { fetchEmotion } from "../util/fetchEmotion";
 import { ChangeEventHandler } from 'react';
+
 export default function AudioInput() {
     const [audioData, setAudioData] = useState<Float32Array | null>(null);
     const [rate, setRate] = useState(48000);
@@ -25,19 +26,14 @@ export default function AudioInput() {
                 rate: rate,
                 numeric: audio_array
             }
-            console.log('Send data', JSON.stringify(data));
             const result = await fetchEmotion(JSON.stringify(data));
-            console.log('Result:', result);
             setEmo(result.result);
             
         }
     }
     const HandleRadioChange: ChangeEventHandler<HTMLInputElement> = (e) => {
         setModel(e.target.value);
-        console.log(model);
     }
-    console.log(audioData);
-    console.log(rate);
 
     return (
         <div>
